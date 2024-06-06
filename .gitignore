@@ -1,6 +1,6 @@
 # Ignore configuration files with sensitive information
 config.php
-.env
+*.env
 
 # Ignore log files
 *.log
