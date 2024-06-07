@@ -1,30 +1,29 @@
-version: '3'
+version: '3.7'
+
 services:
   php:
     build:
       context: .
       dockerfile: Dockerfile.php
     ports:
-      - "80:80"
-    environment:
-      - DB_HOST=mysql
-      - DB_USER=myuser
-      - DB_PASSWORD=mypassword
-      - DB_NAME=mydb
-    volumes:
-      - ./var/www/html/laravel_app:/var/www/html
+      - "8111:80"
     depends_on:
       - mysql
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=myuser
+      - MYSQL_PASSWORD=mypassword
+      - MYSQL_DATABASE=mywebsite
+
   mysql:
     build:
       context: .
       dockerfile: Dockerfile.mysql
     ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_DATABASE=mydb
-      - MYSQL_USER=myuser
-      - MYSQL_PASSWORD=mypassword
-      - MYSQL_ROOT_PASSWORD=rootpassword
+      - "3307:3306"
     volumes:
-      - /var/www/html/mysql-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
+
