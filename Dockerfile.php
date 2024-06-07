@@ -1,34 +1,11 @@
+# Use the official PHP image as the base image
 FROM php:7.4-apache
 
+# Install the mysqli extension
+RUN docker-php-ext-install mysqli
+
+# Copy application files to the Apache document root
 COPY . /var/www/html/
 
-# Install system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    git \
-    unzip && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql
-
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Change working directory
-WORKDIR /var/www/html
-
-# Copy composer.json and composer.lock
-COPY composer.json composer.lock ./
-
-# Install project dependencies
-RUN composer install --no-dev --no-interaction --no-scripts --no-suggest
-
-# Remove Composer and its cache
-RUN rm -rf /usr/local/bin/composer /root/.composer
-
-# Expose port
+# Expose port 80 for the Apache server
 EXPOSE 80
-
-# Start Apache
-CMD ["apache2-foreground"]
